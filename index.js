@@ -33,6 +33,10 @@ app.use(cors(corsOptions));
 // Serve uploaded audio files
 app.use('/uploads', express.static('uploads'));
 
+app.get('/', (req, res) =>  {
+  res.send("RUNNING API");
+});
+
 // Route for uploading audio files
 app.post('/upload', upload.single('audio'), async (req, res) => {
   try {
