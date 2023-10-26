@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 
 const corsOptions = {
-    origin: ['http://localhost:3000', 'http://localhost:5000'],
+    origin: ['https://vavsa-test.vercel.app/', 'http://localhost:5000'],
   };
 
 // Set up MongoDB connection
