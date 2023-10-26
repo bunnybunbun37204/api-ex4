@@ -3,14 +3,16 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
+
 
 const corsOptions = {
     origin: ['http://localhost:3000', 'http://localhost:5000'],
   };
-
+console.log(process.env.URI);
 
 // Set up MongoDB connection
-mongoose.connect('mongodb+srv://bunyawat:Asd_0949823192@cluster0.nqv9e.mongodb.net/', {
+mongoose.connect(process.env.URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -110,6 +112,8 @@ app.get('/audio/:audioId', async (req, res) => {
     }
   });
 
-app.listen('src/', () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(4000, () => {
+  console.log(`Server is running on port 4000`);
 });
+
+module.exports = app;
