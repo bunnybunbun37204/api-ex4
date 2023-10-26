@@ -110,6 +110,6 @@ app.get('/audio/:audioId', async (req, res) => {
     }
   });
 
-app.listen('./netify/function/api', () => {
+app.listen('src/', () => {
   console.log(`Server is running on port ${port}`);
 });
