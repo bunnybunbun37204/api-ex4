@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const cors = require('cors');
 const app = express();
-const port = 4000;
 
 const corsOptions = {
     origin: ['http://localhost:3000', 'http://localhost:5000'],
@@ -111,6 +110,6 @@ app.get('/audio/:audioId', async (req, res) => {
     }
   });
 
-app.listen(port, () => {
+app.listen('./netify/function/api', () => {
   console.log(`Server is running on port ${port}`);
 });
