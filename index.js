@@ -25,7 +25,11 @@ const Audio = mongoose.model('Audio', audioSchema);
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: 'https://vavsa-test.vercel.app/',
+  methods: 'GET,POST',
+  allowedHeaders: 'Content-Type,Authorization',
+}));
 
 // Serve uploaded audio files
 app.use('/uploads', express.static('uploads'));
