@@ -4,9 +4,6 @@ const multer = require('multer');
 const cors = require('cors');
 const app = express();
 
-const corsOptions = {
-    origin: ['https://vavsa-test.vercel.app/', 'http://localhost:5000'],
-  };
 
 // Set up MongoDB connection
 mongoose.connect(process.env.URI, {
@@ -25,7 +22,7 @@ const Audio = mongoose.model('Audio', audioSchema);
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 // Serve uploaded audio files
 app.use('/uploads', express.static('uploads'));
