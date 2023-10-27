@@ -28,7 +28,7 @@ app.use(cors());
 app.use('/uploads', express.static('uploads'));
 
 app.get('/', (req, res) =>  {
-  res.send("RUNNING API V1");
+  res.send("RUNNING API V2");
 });
 
 // Route for uploading audio files
