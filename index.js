@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const cors = require('cors');
 const app = express();
+require('dotenv').config();
 
 
 // Set up MongoDB connection
@@ -31,6 +32,7 @@ const upload = multer({ storage: storage });
 
 // Middleware to add custom headers
 app.use((req, res, next) => {
+  res.setHeader('Content-Type','application/json');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS, PATCH, DELETE, POST, PUT');
@@ -40,6 +42,7 @@ app.use((req, res, next) => {
 
 // Serve uploaded audio files
 app.use('/uploads', express.static('uploads'));
+app.use(express.json()); 
 
 app.get('/', (req, res) =>  {
   res.send("RUNNING API V2");
@@ -67,10 +70,11 @@ app.post('/upload', upload.single('audio'), async (req, res) => {
 
 app.post('/get_notes', async (req, res) => {
   try {
-    const notes = req.body; // Assuming the request body is an array of strings
+    const { notes } = req.body; // Extract the 'notes' property from the request body
+    console.log(notes);
 
     if (!notes || !Array.isArray(notes)) {
-      return res.status(400).send('Invalid input. Expecting an array of strings.');
+      return res.status(400).send('Invalid input. Expecting an object with a "notes" property that contains an array of strings.');
     }
 
     // Save each note in the array to MongoDB
@@ -126,6 +130,26 @@ app.get('/audio/:audioId', async (req, res) => {
       res.status(500).send('Error retrieving and serving audio data');
     }
   });
+
+  app.get('/get_notes/:noteId', async (req, res) => {
+    try {
+      const noteId = req.params.noteId;
+  
+      // Find the note in the database by its ID
+      const note = await Note.findById(noteId);
+  
+      if (!note) {
+        return res.status(404).send('Note not found');
+      }
+  
+      // Send the note as a JSON response
+      res.status(200).json(note);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error retrieving note');
+    }
+  });
+  
   
 
   app.get('/audio', async (req, res) => {
