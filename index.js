@@ -16,7 +16,14 @@ const audioSchema = new mongoose.Schema({
   data: Buffer,
 });
 
+// Create a Mongoose model for notes
+const noteSchema = new mongoose.Schema({
+  content: String,
+});
+
 const Audio = mongoose.model('Audio', audioSchema);
+const Note = mongoose.model('Note', noteSchema);
+
 
 // Configure Multer for handling file uploads
 const storage = multer.memoryStorage();
@@ -55,6 +62,27 @@ app.post('/upload', upload.single('audio'), async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send('Error uploading and saving the audio file');
+  }
+});
+
+app.post('/get_notes', async (req, res) => {
+  try {
+    const notes = req.body; // Assuming the request body is an array of strings
+
+    if (!notes || !Array.isArray(notes)) {
+      return res.status(400).send('Invalid input. Expecting an array of strings.');
+    }
+
+    // Save each note in the array to MongoDB
+    for (const noteContent of notes) {
+      const newNote = new Note({ content: noteContent });
+      await newNote.save();
+    }
+
+    res.status(201).send('Notes saved successfully'); // Respond with a success message
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error saving notes');
   }
 });
 
