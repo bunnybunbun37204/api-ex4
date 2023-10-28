@@ -158,9 +158,15 @@ app.get('/audio/:audioId', async (req, res) => {
       if (!notes) {
         return res.status(404).send('Note not found');
       }
+
+      let data = {
+        id : notes._id,
+        songname : notes.songname,
+        data : notes.content
+      };
   
       // Send the note as a JSON response
-      res.status(200).json(notes);
+      res.status(200).json(data);
     } catch (error) {
       console.error(error);
       res.status(500).send('Error retrieving note');
