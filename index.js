@@ -176,7 +176,7 @@ app.get('/audio/:audioId', async (req, res) => {
   app.get('/audio', async (req, res) => {
     try {
       // Find all audio files in the database
-      const audioFiles = await Audio.find({}, 'filename'); // You can select only the filename if you don't want to send the entire data
+      const audioFiles = await Note.find({}, 'songname'); // You can select only the filename if you don't want to send the entire data
   
       if (audioFiles.length === 0) {
         return res.status(404).send('No audio files found');
