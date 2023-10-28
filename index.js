@@ -81,7 +81,7 @@ app.post('/get_notes', async (req, res) => {
     const newNote = new Note({songname : req.body.songname ,content: notes });
     await newNote.save();
 
-    res.status(201).send('Notes saved successfully'); // Respond with a success message
+    res.status(200).send('Notes saved successfully'); // Respond with a success message
   } catch (error) {
     console.error(error);
     res.status(500).send('Error saving notes');
