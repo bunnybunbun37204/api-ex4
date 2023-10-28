@@ -78,10 +78,8 @@ app.post('/get_notes', async (req, res) => {
     }
 
     // Save each note in the array to MongoDB
-    for (const noteContent of notes) {
-      const newNote = new Note({ content: noteContent });
-      await newNote.save();
-    }
+    const newNote = new Note({ content: notes });
+    await newNote.save();
 
     res.status(201).send('Notes saved successfully'); // Respond with a success message
   } catch (error) {
