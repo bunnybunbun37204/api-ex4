@@ -19,7 +19,7 @@ const audioSchema = new mongoose.Schema({
 
 // Create a Mongoose model for notes
 const noteSchema = new mongoose.Schema({
-  content: String,
+  content: [String],
 });
 
 const Audio = mongoose.model('Audio', audioSchema);
