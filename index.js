@@ -141,7 +141,7 @@ app.get('/audio/:audioId', async (req, res) => {
       }
   
       // Send the note as a JSON response
-      res.status(200).json(note);
+      res.status(200).json(note.content);
     } catch (error) {
       console.error(error);
       res.status(500).send('Error retrieving note');
