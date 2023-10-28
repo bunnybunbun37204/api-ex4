@@ -19,6 +19,7 @@ const audioSchema = new mongoose.Schema({
 
 // Create a Mongoose model for notes
 const noteSchema = new mongoose.Schema({
+  songname: String,
   content: [String],
 });
 
@@ -71,14 +72,13 @@ app.post('/upload', upload.single('audio'), async (req, res) => {
 app.post('/get_notes', async (req, res) => {
   try {
     const { notes } = req.body; // Extract the 'notes' property from the request body
-    console.log(notes);
 
     if (!notes || !Array.isArray(notes)) {
       return res.status(400).send('Invalid input. Expecting an object with a "notes" property that contains an array of strings.');
     }
 
     // Save each note in the array to MongoDB
-    const newNote = new Note({ content: notes });
+    const newNote = new Note({songname : req.body.songname ,content: notes });
     await newNote.save();
 
     res.status(201).send('Notes saved successfully'); // Respond with a success message
@@ -148,7 +148,24 @@ app.get('/audio/:audioId', async (req, res) => {
     }
   });
   
+  app.get('/getNotesByName/:songname', async (req, res) => {
+    try {
+      const requestSongname = req.params.songname;
+      console.log(requestSongname);
+      const notes = await Note.findOne({ songname: requestSongname });
+      console.log(notes);
+
+      if (!notes) {
+        return res.status(404).send('Note not found');
+      }
   
+      // Send the note as a JSON response
+      res.status(200).json(notes.content);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error retrieving note');
+    }
+  });
 
   app.get('/audio', async (req, res) => {
     try {
